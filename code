@@ -1,0 +1,493 @@
+Pawn_Pal1=["P1,","P2","P3","P4","P5","P6","P7","P8"]
+Pawn_Pal2=["Pi","Pii","Piii","Piv","Pv","Pvi","Pvii","Pviii"]
+Knight=["K1","K2","Ki","Kii"] # [(1) for Player1] and [(i) for player2].
+Rook=["R1","R2","Ri","Rii"]
+Elephant=["E1","E2","Ei","Eii"]
+Bishop=["B1","B2","Bi","Bii"]
+King=["King1","King2"]
+Queen=["Queen1","Queen2"]
+
+Board_Conf= "8 x 8 = 64 Square blocks"
+R1= [1,2,3,4,5,6,7,8]
+R2= [9,10,11,12,13,14,15,16]
+R3= [17,18,19,20,21,22,23,24]
+R4= [25,26,27,28,29,30,31,32]
+R5= [33,34,35,36,37,38,39,40]
+R6= [41,42,43,44,45,46,47,48]
+R7= [49,50,51,52,53,54,55,56]
+R8= [57,58,59,60,61,62,63,64]
+
+B_Block=[1,3,5,7,10,12,14,16,17,19,21,23,26,28,30,32,
+         33,35,37,39,42,44,46,48,49,51,53,55,58,60,62,64]
+W_Block=[]
+for a in range(1,65):
+    if a not in B_Block:
+        W_Block.append(a)
+
+
+L=len(R8)-1
+EM={}
+for i in range(1,R8[L]+1):
+    PM=[]
+    I=i
+    D=i
+    for j in range(15):
+        if j<8:
+            if (i in R1):
+                PM.append(R1[j])             
+            elif (i in R2):
+                PM.append(R2[j])
+            elif (i in R3):
+                PM.append(R3[j])
+            elif (i in R4):
+                PM.append(R4[j])
+            elif (i in R5):
+                PM.append(R5[j])
+            elif (i in R6):
+                PM.append(R6[j])
+            elif (i in R7):
+                PM.append(R7[j])
+            elif (i in R8):
+                PM.append(R8[j])
+        else:
+            if I<=56:
+                I+=8
+                PM.append(I)
+            elif I>56 and D>8:
+                D-=8
+                PM.append(D)
+    EM[i]=PM
+
+print("Possible moves of Elephant:\n")
+for i in EM:
+    print(i,"=",EM[i])
+
+E1M=EM
+E2M=EM
+
+BM1={}
+BM2={}
+for k in range(1,R8[L]+1):
+    PM1=[]
+    PM2=[]
+    I=k
+    D=k
+    for l in range(7):
+        if k in B_Block:
+            if I+9 in B_Block:
+                I+=9
+                PM1.append(I)
+            elif D-9 in B_Block:
+                D-=9
+                PM1.append(D)
+        else:
+             if I+9 in W_Block:
+                I+=9
+                PM2.append(I)
+             elif D-9 in W_Block:
+                D-=9
+                PM2.append(D)
+    I=k
+    D=k
+    for l in range(7):
+        if k in B_Block:
+            if I+7 in B_Block:
+                I+=7
+                PM1.append(I)
+            elif D-7 in B_Block:
+                D-=7
+                PM1.append(D)
+        else:
+            if I+7 in W_Block:
+                I+=7
+                PM2.append(I)
+            elif D-7 in W_Block:
+                D-=7
+                PM2.append(D)
+    if k in B_Block:
+        BM1[k]=PM1
+    else:
+        BM2[k]=PM2
+BM={}
+for k in range(1,R8[L]+1):
+    if k in B_Block:
+        BM[k]=BM1[k]
+    else:
+        BM[k]=BM2[k]
+
+print("\n\n\nPossible moves of Bishop in Black block:\n")
+for i in BM1:
+    print(i,"=",BM1[i])
+
+print("\n\n\nPossible moves of Bishop in White block:\n")
+for i in BM2:
+    print(i,"=",BM2[i]) 
+
+
+QueenM={}
+for m in range(1,R8[L]+1):
+    if m in B_Block:
+        QueenM[m]=EM[m]+BM1[m]
+    else:
+        QueenM[m]=EM[m]+BM2[m]
+
+print("\n\n\nPossible moves of Queen:\n")
+for i in QueenM:
+    print(i,"=",QueenM[i])
+
+
+KingM={}
+for n in range(1,R8[L]+1):
+    PM=[]
+    LK,RK,T,B=n-1,n+1,n+8,n-8
+    I1,I2=n+7,n+9
+    D1,D2=n-7,n-9
+    
+    if n in B_Block:
+        if 1<=LK<=64 and LK in W_Block:
+            PM.append(LK)
+        if 1<=RK<=64 and RK in W_Block:
+            PM.append(RK)
+        if 1<=T<=64 and T in W_Block:
+            PM.append(T)
+        if 1<=B<=64 and B in W_Block:
+            PM.append(B)
+        if 1<=I1<=64 and I1 in B_Block:
+            PM.append(I1)
+        if 1<=I2<=64 and I2 in B_Block:
+            PM.append(I2)
+        if 1<=D1<=64 and D1 in B_Block:
+            PM.append(D1)
+        if 1<=D2<=64 and D2 in B_Block:
+            PM.append(D2)
+    else:
+        if 1<=LK<=64 and LK in B_Block:
+            PM.append(LK)
+        if 1<=RK<=64 and RK in B_Block:
+            PM.append(RK)
+        if 1<=T<=64 and T in B_Block:
+            PM.append(T)
+        if 1<=B<=64 and B in B_Block:
+            PM.append(B)
+        if 1<=I1<=64 and I1 in W_Block:
+            PM.append(I1)
+        if 1<=I2<=64 and I2 in W_Block:
+            PM.append(I2)
+        if 1<=D1<=64 and D1 in W_Block:
+            PM.append(D1)
+        if 1<=D2<=64 and D2 in W_Block:
+            PM.append(D2)
+    KingM[n]=PM
+
+print("\n\n\nPossible moves of King:\n")
+for i in KingM:
+    print(i,"=",KingM[i])
+
+
+KM={}
+for o in range(1,R8[L]+1):
+    PM=[]
+    LKm,RKm=o-2,o+2
+    Tkm,BKm=o+16,o-16
+    Kl1,Kl2=LKm+8,LKm-8
+    Kr1,Kr2=RKm+8,RKm-8
+    Kt1,Kt2=Tkm+1,Tkm-1
+    Kb1,Kb2=BKm+1,BKm-1
+    if o in B_Block:
+        if 1<=Kl1<=64 and Kl1 in W_Block:
+            PM.append(Kl1)
+        if 1<=Kl2<=64 and Kl2 in W_Block:
+            PM.append(Kl2)
+        if 1<=Kr1<=64 and Kr1 in W_Block:
+            PM.append(Kr1)
+        if 1<=Kr2<=64 and Kr2 in W_Block:
+            PM.append(Kr2)
+        if 1<=Kt1<=64 and Kt1 in W_Block:
+            PM.append(Kt1)
+        if 1<=Kt2<=64 and Kt2 in W_Block:
+            PM.append(Kt2)
+        if 1<=Kb1<=64 and Kb1 in W_Block:
+            PM.append(Kb1)
+        if 1<=Kb2<=64 and Kb2 in W_Block:
+            PM.append(Kb2)
+    else:
+        if 1<=Kl1<=64 and Kl1 in B_Block:
+            PM.append(Kl1)
+        if 1<=Kl2<=64 and Kl2 in B_Block:
+            PM.append(Kl2)
+        if 1<=Kr1<=64 and Kr1 in B_Block:
+            PM.append(Kr1)
+        if 1<=Kr2<=64 and Kr2 in B_Block:
+            PM.append(Kr2)
+        if 1<=Kt1<=64 and Kt1 in B_Block:
+            PM.append(Kt1)
+        if 1<=Kt2<=64 and Kt2 in B_Block:
+            PM.append(Kt2)
+        if 1<=Kb1<=64 and Kb1 in B_Block:
+            PM.append(Kb1)
+        if 1<=Kb2<=64 and Kb2 in B_Block:
+            PM.append(Kb2)
+            
+        
+    KM[o]=PM
+
+print("\n\n\nPossible moves of Knight:\n")
+for i in KM:
+    print(i,"=",KM[i])
+
+
+PM1={}
+PM2={}
+for p in range(1,R8[L]+1):
+    PM=[]
+    I=p
+    if p in R2:
+        I+=8
+        PM.append(I)
+        I+=8
+        PM.append(I)
+    else:
+        I+=8
+        if 1<=I<=64:
+            PM.append(I)
+    PM1[p]=PM
+
+    PM=[]
+    I=p
+    if p in R7:
+        I-=8
+        PM.append(I)
+        I-=8
+        PM.append(I)
+    else:
+        I-=8
+        if 1<=I<=64:
+            PM.append(I)
+    PM2[p]=PM
+
+    AM1=[]
+    AM2=[]
+    I1,I2=p+7,p+9
+    D1,D2=p-7,p-9
+    if 1<=I1<=64 or 1<=I2<=64 or 1<=D1<=64 or 1<=D2<=64:
+        if p in B_Block:
+            if 1<=I1<=64 and I1 in B_Block:
+                AM1.append(I1)
+            if 1<=I2<=64 and I2 in B_Block:
+                AM1.append(I2)
+            if 1<=D1<=64 and D1 in B_Block:
+                AM2.append(D1)
+            if 1<=D2<=64 and D2 in B_Block:
+                AM2.append(D2)
+        else:
+            if 1<=I1<=64 and I1 in W_Block:
+                AM1.append(I1)
+            if 1<=I2<=64 and I2 in W_Block:
+                AM1.append(I2)
+            if 1<=D1<=64 and D1 in W_Block:
+                AM2.append(D1)
+            if 1<=D2<=64 and D2 in W_Block:
+                AM2.append(D2)
+    L1=PM1[p]
+    L2=PM2[p]
+    if len(AM1)!=0 or len(AM2)!=0:
+        if len(AM1)!=0:
+            L1.append(AM1)
+        if len(AM2)!=0:
+            L2.append(AM2)
+    PM1[p]=L1
+    PM2[p]=L2
+
+for q in range(1,9):
+    del PM1[q]
+    del PM2[q+56]
+    
+
+print("\n\n\nPossible moves of Pawn(Pal1) including attack moves:\n")
+for i in PM1:
+    print(i,"=",PM1[i])
+
+print("\n\n\nPossible moves of Pawn(Pal2) including attack moves:\n")
+for i in PM2:
+    print(i,"=",PM2[i])
+print("\n")
+
+
+Player1={"E1":1,"K1":2,"B1":3,"King1":4,"Queen1":5,"B2":6,"K2":7,"E2":8,
+        "P1":9,"P2":10,"P3":11,"P4":12,"P5":13,"P6":14,"P7":15,"P8":16}
+
+Player1_1={1:"E1",2:"K1",3:"B1",4:"King1",5:"Queen1",6:"B2",7:"K2",8:"E2",
+        9:"P1",10:"P2",11:"P3",12:"P4",13:"P5",14:"P6",15:"P7",16:"P8"}
+
+
+Player2={"Ei":64,"Ki":63,"Bi":62,"King2":61,"Queen2":60,"Bii":59,"Kii":58,"Eii":57,
+        "Pi":56,"Pii":55,"Piii":54,"Piv":53,"Pv":52,"Pvi":51,"Pvii":50,"Pviii":49}
+
+Player2_2={64:"Ei",63:"Ki",62:"Bi",61:"King2",60:"Queen2",59:"Bii",58:"Kii",57:"Eii",
+         56:"Pi",55:"Pii",54:"Piii",53:"Piv",52:"Pv",51:"Pvi",50:"Pvii",49:"Pviii"}
+
+Fn=""
+Finish="No"
+Start="Yes"
+Players=["Player1","Player2"]
+Play=input("Enter the player who will start the game:- ")
+
+while Start=="Yes" and Finish=="No":
+    print("\n\n")
+    print(" +"+"-"*52+"+")
+    BL=0
+    for r in range(1,R8[L]+1):
+        if BL==8:
+            print("\n +"+"-"*52+"+")
+            print(" +"+"-"*52+"+")
+            BL=0
+        if r in Player1_1 or r in Player2_2:
+            if r in (Player1_1):
+                r2=Player1_1[r]
+                if r2 in ("King1","Queen1"):
+                    print("|"+r2,end="|")
+                else:
+                    print(" |"+r2,end="|  ")
+            elif r in (Player2_2):
+                r3=Player2_2[r]
+                if r3 in ("King2","Queen2"):
+                    print("|"+r3,end="|")
+                elif len(r3)==4 or len(r3)==5:
+                    print("|"+r3,end="| ")
+                else:
+                    print(" |"+r3,end="| ")
+                
+        else: 
+            print(" |"+str(r),end="|  ")
+        BL+=1
+    print("\n +"+"-"*52+"+")
+    print("\n")
+
+    for s in Player1_1.copy():
+        try:
+            if type(eval(Player1_1[s]))==type(10):
+                del Player1_1[s]
+        except:
+            continue
+
+    for t in Player2_2.copy():
+        try:
+            if type(eval(Player2_2[s]))==type(10):
+                del Player2_2[s]
+        except:
+            continue
+            
+    if Play==Players[0]:
+        Ch=input("\nPlayer1 Choose your troop:- ")
+        Ch=Ch.title()
+        Mk=int(input("Player1 Make your move= "))
+        CP=Player1[Ch]
+        
+        if Ch in Pawn_Pal1:
+            PosM=PM1[CP]
+            PosM2=PosM[-1]
+
+        elif Ch in Knight:
+            PosM=KM[CP]
+
+        elif Ch in King:
+            PosM=King[CP]
+
+        elif Ch in Queen:
+            PosM=QueenM[CP]
+
+        elif Ch in Bishop:
+            PosM=BM[CP]
+
+        elif Ch in Elephant:
+            PosM=EM[CP]      
+            
+        if Mk in PosM or Mk in PosM2:
+            if Mk in Player2.values():
+                Index=Player2_2[Mk]
+                del Player2[Index]
+                del Player2_2[Mk]
+                print("\nPlayer1 has knocked down Player2's",Index,"at position->",Mk)
+                Player1_1[Player1[Ch]]=str(Player1[Ch])
+                Player1[Ch]=Mk
+                Player1_1[Mk]=Ch
+                Play="Player2"
+            
+            elif Mk in Player1.values():
+                print("Try Again !\n")
+                Play="Player1"
+
+            
+            else:
+                Player1_1[Player1[Ch]]=str(Player1[Ch])
+                Player1[Ch]=Mk
+                Player1_1[Mk]=Ch
+                Play="Player2"
+
+        if "King2" not in Player2:
+            Fn="Checkmate"
+
+            Win="Player1"
+            Lost="Player2"
+ 
+    elif Play==Players[1]:
+        Ch=input("\nPlayer2 Choose your troop:- ")
+        Ch=Ch.title()
+        Mk=int(input("Player2 Make your move= "))
+        CP=Player2[Ch]
+        
+        if Ch in Pawn_Pal2:
+            PosM=PM2[CP]
+            PosM2=PosM[-1]
+
+        elif Ch in Knight:
+            PosM=KM[CP]
+
+        elif Ch in King:
+            PosM=KingM[CP]
+
+        elif Ch in Queen:
+            PosM=QueenM[CP]
+
+        elif Ch in Bishop:
+            PosM=BM[CP]
+
+        elif Ch in Elephant:
+            PosM=EM[CP]
+            
+        if Mk in PosM or Mk in PosM2:
+            if Mk in Player1.values():
+                Index=Player1_1[Mk]
+                del Player1[Index]
+                del Player1_1[Mk]
+                print("\nPlayer2 has knocked down Player1's",Index,"at position->",Mk)
+                Player2_2[Player2[Ch]]=str(Player2[Ch])
+                Player2[Ch]=Mk
+                Player2_2[Mk]=Ch
+                Play="Player1"
+                
+            elif Mk in Player2.values():
+                print("Try Again")
+                Play="Player2"
+
+            else:
+                Player2_2[Player2[Ch]]=str(Player2[Ch])
+                Player2[Ch]=Mk
+                Player2_2[Mk]=Ch
+                Play="Player1"
+
+        if "King1" not in Player1:
+            Fn="Checkmate"
+
+            Win="Player2"
+            Lost="Player1"
+
+    
+    if Fn=="Checkmate":
+        Finish="Yes"
+
+print("\n"+Lost,"got checkmated by",Win)
+print(Win,"has won the game !")
+    
+    
+    
